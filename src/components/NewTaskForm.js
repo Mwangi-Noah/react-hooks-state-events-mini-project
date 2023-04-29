@@ -1,38 +1,44 @@
 import React, { useState } from "react";
 
-function NewTaskForm({ categories, onTaskFormSubmit }) {
-  const [text, setText] = useState("");
-  const [category, setCategory] = useState("Food");
+function NewTaskForm({ categories, onFormSubmit }) {
+  const [formData, setFormData] = useState({
+    text: "",
+    category: "Food",
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
     const newTask = {
-      text: text,
-      category: category,
+      text: formData.text,
+      category: formData.category,
     };
 
-    onTaskFormSubmit(newTask);
+    onFormSubmit(newTask);
+    setFormData({
+      text: "",
+      category: "Food",
+    });
    
   };  
   
   
   return (
-    <form className="new-task-form">
+    <form className="new-task-form" onSubmit={handleSubmit}>
       <label>
         Details
         <input 
         type="text" 
         name="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={formData.text}
+        onChange={(e) => setFormData({ ...formData, text: e.target.value })}
          />
       </label>
       <label>
         Category
         <select 
         name="category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}>
+        value={formData.category}
+        onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
           {categories.map((category) => {
             if (category !== "All") {
               return (
